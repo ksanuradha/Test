@@ -1,0 +1,202 @@
+
+1.
+select custname,count(orderid)
+from Customer c,Orders o
+where c.custid=o.custid
+group by c.custid
+order by 2 desc;
+
+2.
+select description,count(orderid)
+from Item i , OrderDetail od
+where i.itemcode=od.itemcode
+group by i.itemcode
+order by 2 desc;
+
+3. 
+select description, sum(od.orderQty * i.unitPrice)
+from Item i , OrderDetail od 
+where i.itemcode=od.itemcode
+group by i.itemcode
+order by 2 desc;
+
+4. 
+select od.orderid,sum(OrderQty * i.unitprice) as 'Total Income'
+from Orders o, OrderDetail od, Item i
+where o.orderid=od.orderid and od.itemcode=i.itemcode
+group by o.orderid
+order by 2 desc;
+
+5.
+select custname,description, orderqty
+from Customer c, Orders o,OrderDetail od, Item i
+where c.custid=o.custid and o.orderid=od.orderid and 
+od.itemcode=i.itemcode
+order by 3 desc;
+
+6. 
+select custname,sum(orderQty * i.unitprice) - discount 
+from Customer c, Orders o,OrderDetail od, Item i
+where c.custid=o.custid and o.orderid=od.orderid and 
+od.itemcode=i.itemcode
+group by c.custid
+order by 2 desc
+limit 5;
+
+
+---------------------------------------------------------------------
+
+-- delete and update 
+
+delete 
+from Customer 
+where custid='C007' ;
+
+delete 
+from Customer 
+where province='Western' && salary >= 75000;
+
+
+delete 
+from Customer c, Orders o 
+where c.custid=o.custid;    
+
+
+delete 
+from Customer 
+where custid NOT IN (select custid from Orders);
+
+delete 
+from Customer;
+
+update 
+Customer 
+set custname='Danapala Kumara'
+where custname='Danapala';
+
+update 
+Customer 
+set custtitle='Excelency'
+where salary >= 80000;
+
+
+------ more subquery
+
+select province,count(custid), (select avg(salary) from Customer) as AvgSalary
+from Customer 
+group by province;
+
+select province,count(custid)
+from Customer 
+where (select avg(salary) from Customer) > 45000
+group by province;
+
+
+-----------
+
+create or replace view CUST_INCOME as 
+select custname,sum(orderQty * i.unitprice) - discount as Sumation 
+from Customer c, Orders o,OrderDetail od, Item i
+where c.custid=o.custid and o.orderid=od.orderid and 
+od.itemcode=i.itemcode
+group by c.custid
+order by 2 desc;
+SELECT * FROM CUST_INCOME;
+
+
+drop VIEW CUST_INCOME;
+
+ADVANCED DBMS
+1. PL/SQL
+2. PROCEDURES 
+3. SQL FUNCTION
+4. QUERY OPTIMITATION 
+
+
+
+
+-------- Data Control Lanaguage - DCL
+
+-- this is the command for creating user without privileges
+CREATE USER student1@localhost 
+identified by '123';
+
+-- to drop user student1, you need to log as an admin
+-- log as root user 
+DROP USER student1@localhost; 
+
+
+create table abc (aa int, bb int);
+
+
+---- privileges types
+1. global privilege 
+2. database privilege 
+3. table privilege
+
+----- learn how to assign privileges to the user 
+
+CREATE USER ijseuser1@localhost 
+identified by '123';
+
+
+GRANT ALL
+ON *.*
+TO ijseuser1@localhost ;
+
+OR 
+
+GRANT create,select,insert,update,delete,alter
+ON *.*
+TO ijseuser1@localhost ;
+
+show grants for ijseuser1@localhost;
+
+------------------ database privilege
+CREATE USER ijseuser2@localhost 
+identified by '123';
+
+GRANT SELECT
+ON Thogakade.*
+To ijseuser2@localhost;
+
+---------------------- table privilege
+CREATE USER ijseuser3@localhost 
+identified by '123';
+
+
+
+GRANT SELECT,UPDATE
+ON Thogakade.Orders
+TO ijseuser3@localhost ;
+
+
+
+DBMS EXAMINATION IS HELD  ON 24TH OF FEB 2015 
+FROM 8.30AM TO 11.30AM
+
+-------------------FOR MORE KNOWLEDGE 
+SEARCH MYSQL MANUAL ON GOOGLE   mysql user manual 5.5 
+
+visit    www.java2s.com   ----> go to the mysql tab
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
